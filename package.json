@@ -1,0 +1,9 @@
+{
+  "name": "agente-crm",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "conversar": "node --env-file=.env scripts/conversar.ts",
+    "avaliar": "node --env-file=.env scripts/avaliar.ts"
+  }
+}
