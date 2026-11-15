@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "pipeline-crm": {
+      "command": "node",
+      "args": ["--no-warnings", "--env-file=.env", "src/mcp.ts"]
+    }
+  }
+}

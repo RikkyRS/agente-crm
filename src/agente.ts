@@ -13,7 +13,7 @@
 import { FERRAMENTAS, porNome } from "./ferramentas.ts";
 
 const MODELO = process.env.OLLAMA_MODEL ?? "qwen2.5:7b";
-const MAX_PASSOS = 6; // trava de segurança: o agente não pode ficar em loop infinito
+export const MAX_PASSOS = 6; // trava de segurança: o agente não pode ficar em loop infinito
 
 export type Mensagem = {
   role: "system" | "user" | "assistant" | "tool";
@@ -34,7 +34,9 @@ export const SISTEMA = [
   "Responda de forma curta e objetiva.",
 ].join("\n");
 
-async function chamarModelo(mensagens: Mensagem[]) {
+export type Modelo = (mensagens: Mensagem[]) => Promise<Mensagem>;
+
+export async function chamarModelo(mensagens: Mensagem[]): Promise<Mensagem> {
   const r = await fetch("http://localhost:11434/api/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -54,12 +56,13 @@ export async function rodarAgente(
   pedido: string,
   confirmar: (descricao: string) => Promise<boolean>,
   historico: Mensagem[] = [{ role: "system", content: SISTEMA }],
+  modelo: Modelo = chamarModelo, // nos testes, entra um modelo falso com respostas roteirizadas
 ) {
   historico.push({ role: "user", content: pedido });
   const passos: Passo[] = [];
 
   for (let i = 0; i < MAX_PASSOS; i++) {
-    const resposta = await chamarModelo(historico);
+    const resposta = await modelo(historico);
     historico.push(resposta);
 
     // Sem pedido de ferramenta = resposta final

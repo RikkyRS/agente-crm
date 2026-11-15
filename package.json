@@ -4,6 +4,16 @@
   "type": "module",
   "scripts": {
     "conversar": "node --env-file=.env scripts/conversar.ts",
-    "avaliar": "node --env-file=.env scripts/avaliar.ts"
+    "avaliar": "node --env-file=.env scripts/avaliar.ts",
+    "test": "vitest run",
+    "mcp": "node --no-warnings src/mcp.ts",
+    "testar-mcp": "node --no-warnings scripts/testar-mcp.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
   }
 }
